@@ -13,7 +13,7 @@
         PreviewMouseMove="Window_PreviewMouseMove"
         PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp"
         PreviewMouseRightButtonDown="Window_PreviewMouseRightButtonDown"
-        WindowStartupLocation="CenterOwner" AllowsTransparency="True"
+        WindowStartupLocation="CenterOwner" AllowsTransparency="True" Loaded="Window_Loaded"
         >
     <Window.Resources>
         <Style x:Key="M" TargetType="Label">
@@ -59,11 +59,11 @@
         </Grid.RowDefinitions>
 
         <Popup x:Name="Pop_time" Width="366" Height="96"
-               PlacementTarget="{Binding ElementName=PopButton}"
-               Placement="Top"
-               HorizontalOffset="-110"
+               PlacementTarget = "{Binding ElementName=PopButton}"
+               Placement="Center"
+               VerticalOffset="-85"
                AllowsTransparency="True"
-               PopupAnimation="Slide">
+               PopupAnimation="Fade">
             <Grid>
                 <Rectangle Fill="#d4d4d4" Margin="5" Opacity="0.8" RadiusY="2" RadiusX="2">
                     <Rectangle.Effect>
@@ -73,13 +73,14 @@
                             ShadowDepth="1"/>
                     </Rectangle.Effect>
                 </Rectangle>
-                <Label x:Name="Pop_Ltime"/>
+                <Label x:Name="Pop_Ltime" Content="0 0 : 0 0 : 0 0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </Grid>
         </Popup>
 
         <Popup x:Name="Pop" Width="180" Height="255" 
                PlacementTarget="{Binding ElementName=PopButton}"
-               Placement="Bottom"
+               Placement="Mouse"
+               HorizontalOffset="0"
                AllowsTransparency="True"
                PopupAnimation="Slide"
                MouseLeftButtonDown="Pop_MouseLeftButtonDown">
@@ -98,20 +99,58 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="10" Grid.Column="0" Grid.ColumnSpan="2">
-                        <Label Content="暂留课程" Style="{StaticResource C}" MouseDown="Label_add"/>
-                        <!--<Label Content="课表字体" Style="{StaticResource C}" MouseDown="Label_Cfont"/>-->
-                        <!--<Label Content="计时字体" Style="{StaticResource C}" MouseDown="Label_Tfont"/>-->
-                        <Label Content="全局字体" Style="{StaticResource C}" MouseDown="Label_Afont"/>
-                        <Label Content="倒计时" Style="{StaticResource C}" MouseDown="Text_time"/>
-                        <Label Content="热重载" Style="{StaticResource C}" MouseDown="Text_reload"/>
+                        <Label Content="设置课表" Style="{StaticResource C}" MouseDown="ClasS_set"/>
+                        <Label Content="设置字体" Style="{StaticResource C}" MouseDown="Label_Afont"/>
+                        <Label Content="倒计时" Style="{StaticResource C}" MouseDown="Countdown"/>
+                        <Label Content="时间" Style="{StaticResource C}" MouseDown="Text_time"/>
                         <Label Content="退出" Style="{StaticResource C}" MouseDown="Label_Exit"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="0">
-
                     </StackPanel>
                 </Grid>
             </Grid>
         </Popup>
+
+        <Popup x:Name="Pop_set" Width="495" Height="65" 
+               PlacementTarget="{Binding ElementName=MainPanel}"
+               Placement="Center"
+               VerticalOffset="75"
+               HorizontalOffset="0"
+               AllowsTransparency="True"
+               PopupAnimation="Slide">
+            <Grid>
+                <Rectangle Fill="White" Margin="5" Opacity="0.8" RadiusY="2" RadiusX="2">
+                    <Rectangle.Effect>
+                        <DropShadowEffect
+                            Color="#FFBBBBBB" Direction="0"
+                            BlurRadius="15" RenderingBias="Quality"
+                            ShadowDepth="1"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0.3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox x:Name="week_list" Margin="15 15 0 15" Grid.Column="0"
+                              VerticalAlignment="Center" DropDownClosed="Week_Changed">
+                        <ComboBoxItem IsSelected="True">周一</ComboBoxItem>
+                        <ComboBoxItem>周二</ComboBoxItem>
+                        <ComboBoxItem>周三</ComboBoxItem>
+                        <ComboBoxItem>周四</ComboBoxItem>
+                        <ComboBoxItem>周五</ComboBoxItem>
+                        <ComboBoxItem>周六</ComboBoxItem>
+                        <ComboBoxItem>周日</ComboBoxItem>
+                    </ComboBox>
+                    <TextBox x:Name="week" Margin="15 15 0 15" 
+                             Grid.Column="1" FontSize="14" VerticalAlignment="Center" 
+                             Text=" "/>
+                    <Button Margin="15 15 15 15" Content="保存" Grid.Column="2" VerticalAlignment="Center" Click="Class_Save"/>
+
+                </Grid>
+            </Grid>
+        </Popup>
+        
         <StackPanel x:Name="ClasS" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
             <Label x:Name="L_0" Content="语" Style="{StaticResource M}"/>
             <Label x:Name="L_1" Content="数" Style="{StaticResource M}"/>

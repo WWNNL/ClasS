@@ -7,6 +7,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -17,6 +18,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Reflection;
+using System.Xml;
 
 namespace ClasS
 {
@@ -27,19 +30,61 @@ namespace ClasS
     {
         Point _pressedPosition;
         bool _isDragMoved = false;
-        public MainWindow()
+
+        public void SetMenuDropAlignment()
+        {
+            // 如果，默认值是左对齐就进行处理
+            if (SystemParameters.MenuDropAlignment)
+            {
+                var type = typeof(SystemParameters);
+                var fieldName = "_menuDropAlignment";
+                var bindingAttr = BindingFlags.NonPublic | BindingFlags.Static;
+                if (type.GetField(fieldName, bindingAttr) is FieldInfo field)
+                {
+                    field.SetValue(null, false);
+                    return;
+                }
+
+                throw new Exception($"无法设置 {nameof(SystemParameters.MenuDropAlignment)} 的值");
+            }
+        }
+
+        public void init()
         {
             WindowStartupLocation = WindowStartupLocation.Manual;
             double sHeight = SystemParameters.FullPrimaryScreenHeight;
             double sWidth = SystemParameters.FullPrimaryScreenWidth;
             this.Top = (sHeight - 67) / 2 - sHeight / 6 * 2;
             this.Left = (sWidth - 592) / 2;
-            StreamWriter Csw = new StreamWriter("Class.txt",true);
-            Csw.Close();
-            FileInfo info = new FileInfo("Class.txt");
-            if (info.Exists) { info.Attributes = FileAttributes.Hidden; }
 
+            File.AppendAllText("ClasS.yaml", "");
+            string R_yaml = File.ReadAllText("ClasS.yaml");
+            string W="";
+            for (int i = 0; i != 5; i++)
+                W += "语数英政休历音体美\n";
+            for (int i = 0; i != 2; i++)
+                W += "休休休休休休休休休\n";
+
+            long lSize = 0;
+            if (File.Exists("ClasS.yaml"))
+                lSize = new FileInfo("ClasS.yaml").Length;
+
+            if (lSize<70)
+                File.AppendAllText("ClasS.yaml", W);
+
+            FileInfo info = new FileInfo("ClasS.yaml");
+            if (info.Exists)
+                info.Attributes = FileAttributes.Hidden;
+
+            SetMenuDropAlignment();
+        }
+
+        public MainWindow()
+        {
+            init();
             InitializeComponent();
+            reload();
+            Text_Show();
         }
 
         void Window_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -94,31 +139,20 @@ namespace ClasS
             MessageBox.Show("Label_add触发");
         }
 
-        private void Text_reload(object sender, MouseButtonEventArgs e)
+        private void reload()
         {
-            String[] line = new String[45];
-            int line_num = 0;
-            StreamReader Csr = new StreamReader("Class.txt");
-            while (true)
-            {
-                line[line_num] = Csr.ReadLine();
-                if (line[line_num] == null) { break; }
-                line_num++;
-            }
-            //L_0.Content = Regex.Replace(line[0], @"[^0-9]+", "");
-            if (line_num > 8) 
-            {
-                L_0.Content = line[0][0];
-                L_1.Content = line[1][0];
-                L_2.Content = line[2][0];
-                L_3.Content = line[3][0];
-                L_4.Content = line[4][0];
-                L_5.Content = line[5][0];
-                L_6.Content = line[6][0];
-                L_7.Content = line[7][0];
-                L_8.Content = line[8][0];
-            }
-            Csr.Close();
+            string[] text = File.ReadAllLines("ClasS.yaml");
+            int week = Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"))-1;
+
+            L_0.Content = text[week][0];
+            L_1.Content = text[week][1];
+            L_2.Content = text[week][2];
+            L_3.Content = text[week][3];
+            L_4.Content = text[week][4];
+            L_5.Content = text[week][5];
+            L_6.Content = text[week][6];
+            L_7.Content = text[week][7];
+            L_8.Content = text[week][8];
         }
 
         private void Text_time(object sender, MouseButtonEventArgs e)
@@ -130,43 +164,109 @@ namespace ClasS
             else { Pop_time.IsOpen = true; }
         }
 
-        private void Label_Cfont(object sender, MouseButtonEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = System.Environment.CurrentDirectory;    //初始的文件夹
-            openFileDialog.Filter = "课表字体|*.ttf";//在对话框中显示的文件类型
-            //openFileDialog.FilterIndex = 2;
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.ShowDialog();    //显示对话框
-            string filepath = openFileDialog.FileName; //获取选择的文件的全路径名
-        }
-
-        private void Label_Tfont(object sender, MouseButtonEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = System.Environment.CurrentDirectory; ;    //初始的文件夹
-            openFileDialog.Filter = "计时字体|*.ttf";//在对话框中显示的文件类型
-            //openFileDialog.FilterIndex = 2;
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.ShowDialog();    //显示对话框
-            string filepath = openFileDialog.FileName; //获取选择的文件的全路径名
-        }
-
         private void Label_Afont(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = System.Environment.CurrentDirectory; ;    //初始的文件夹
+            openFileDialog.InitialDirectory = System.Environment.CurrentDirectory;    //初始的文件夹
             openFileDialog.Filter = "全局字体|*.ttf";//在对话框中显示的文件类型
             //openFileDialog.FilterIndex = 2;
             openFileDialog.RestoreDirectory = true;
             openFileDialog.ShowDialog();    //显示对话框
             string filepath = openFileDialog.FileName; //获取选择的文件的全路径名
-            this.FontFamily = new FontFamily("file:///"+ filepath);
-            //StreamWriter Fsw = new StreamWriter("Font.txt", true);
-            //Fsw.WriteLine("file:///" + filepath);
-            //Fsw.Close();
-            //FileInfo info = new FileInfo("Font.txt");
-            //if (info.Exists) { info.Attributes = FileAttributes.Hidden; }
+            if (filepath != "")
+            {
+                this.FontFamily = new FontFamily("file:///" + filepath);
+            }
+        }
+
+        private void Showtimer_Tick(object sender,EventArgs e)
+        {
+            Pop_Ltime.Content = DateTime.Now.ToString(("HH : mm : ss"));
+        }
+
+        private void Window_Loaded(object sender,RoutedEventArgs e)
+        {
+            DispatcherTimer showtimer = new DispatcherTimer();
+            showtimer.Tick += Showtimer_Tick;
+            showtimer.Interval = new TimeSpan(0, 0, 0, 1);
+            showtimer.Start();
+        }
+
+        private void ClasS_set(object sender, MouseButtonEventArgs e)
+        {
+            if (Pop_set.IsOpen == true)
+            {
+                Pop_set.IsOpen = false;
+            }
+            else { Pop_set.IsOpen = true; }
+        }
+
+        private void Week_Changed(object sender, EventArgs e)
+        {
+            Text_Show();
+        }
+
+        void Text_Show()
+        {
+            string text = week_list.Text;
+            int choose = Choose(text) - 1;
+            string[] Ctext = File.ReadAllLines("ClasS.yaml");
+            if(week!=null)
+                week.Text = Ctext[choose];
+        }
+
+        int Choose(string text)
+        {
+            int choose = 1;
+            switch (text)
+            {
+                case "周一":
+                    choose = 1;
+                    break;
+                case "周二":
+                    choose = 2;
+                    break;
+                case "周三":
+                    choose = 3;
+                    break;
+                case "周四":
+                    choose = 4;
+                    break;
+                case "周五":
+                    choose = 5;
+                    break;
+                case "周六":
+                    choose = 6;
+                    break;
+                case "周日":
+                    choose = 7;
+                    break;
+                default:
+                    break;
+            }
+            return choose;
+        }
+
+        private void Class_Save(object sender, RoutedEventArgs e)
+        {
+            string[] Ctext = File.ReadAllLines("ClasS.yaml");
+            string changed = week_list.Text;
+            string text = "";
+            int choose = Choose(changed) -1;
+            Ctext[choose] = week.Text;
+            for (int i = 0; i < Ctext.Length; i++)
+                text += Ctext[i] + "\n";
+            FileInfo info = new FileInfo("ClasS.yaml");
+            info.Attributes = FileAttributes.Normal;
+            File.WriteAllText("ClasS.yaml", text);
+            info.Attributes = FileAttributes.Hidden;
+            reload();
+            Pop_set.IsOpen = false;
+        }
+
+        private void Countdown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
