@@ -290,6 +290,7 @@ namespace ClasS
             Pop_Countdown.IsOpen = false;
             Pop_Countdown2.IsOpen = true;
             Tz = Ts + Tm * 60 + 1;
+            disTimer.Tick -= new EventHandler(UpdateCountDownDisplay);
             TCountDown();
         }
 

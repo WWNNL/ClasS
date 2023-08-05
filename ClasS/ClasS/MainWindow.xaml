@@ -78,10 +78,10 @@
                AllowsTransparency="True"
                PopupAnimation="Fade">
             <Grid>
-                <Rectangle Fill="#d4d4d4" Margin="5" Opacity="0.8" RadiusY="2" RadiusX="2">
+                <Rectangle Fill="#f0f0f0" Margin="5" Opacity="0.8" RadiusY="2" RadiusX="2">
                     <Rectangle.Effect>
                         <DropShadowEffect
-                            Color="#FFBBBBBB" Direction="0"
+                            Color="#d4d4d4" Direction="0"
                             BlurRadius="15" RenderingBias="Quality"
                             ShadowDepth="1"/>
                     </Rectangle.Effect>
@@ -233,7 +233,7 @@
                 <Rectangle Fill="#d4d4d4" Margin="5" Opacity="0.8" RadiusY="2" RadiusX="2">
                     <Rectangle.Effect>
                         <DropShadowEffect
-                            Color="#FFBBBBBB" Direction="0"
+                            Color="#e0e0e0" Direction="0"
                             BlurRadius="15" RenderingBias="Quality"
                             ShadowDepth="1"/>
                     </Rectangle.Effect>
