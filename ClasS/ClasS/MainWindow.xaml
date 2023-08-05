@@ -114,6 +114,7 @@
                     <StackPanel Margin="10" Grid.Column="0" Grid.ColumnSpan="2">
                         <Label Content="设置课表" Style="{StaticResource C}" MouseDown="ClasS_set"/>
                         <Label Content="更多功能" Style="{StaticResource C}" MouseDown="More_func"/>
+                        <Label Content="异常重载" Style="{StaticResource C}" MouseDown="Abnormal"/>
                         <!--<Label Content="设置字体" Style="{StaticResource C}" MouseDown="Label_Afont"/>-->
                         <Label Content="倒计时" Style="{StaticResource C}" MouseDown="Countdown"/>
                         <Label Content="时间" Style="{StaticResource C}" MouseDown="Text_time"/>

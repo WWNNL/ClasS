@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Reflection;
 using System.Xml;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace ClasS
 {
@@ -91,6 +92,7 @@ namespace ClasS
         void Window_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             _pressedPosition = e.GetPosition(this);
+            Pop.IsOpen = false;
         }
 
         void Window_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -262,6 +264,7 @@ namespace ClasS
 
         private void Countdown(object sender, MouseButtonEventArgs e)
         {
+            disTimer.Stop();
             if (Pop_Countdown.IsOpen == true)
             {
                 Pop_Countdown.IsOpen = false;
@@ -287,26 +290,22 @@ namespace ClasS
             Pop_Countdown.IsOpen = false;
             Pop_Countdown2.IsOpen = true;
             Tz = Ts + Tm * 60 + 1;
-            CountDown();
+            TCountDown();
         }
 
         void UpdateCountDownDisplay(object sender, EventArgs e)
         {
             Tz--;
             if (Tz == -1)
-            {
                 disTimer.Stop();
-                Ts = 0;
-                Tm = 0;
-            }
             else if (Tz < 3)
                 System.Media.SystemSounds.Beep.Play();
-           if (Tz>-1)
+           if (Tz > -1)
                 Pop_Ctime.Content = string.Format("{0:D2}", Tz / 3600) + " : " + string.Format("{0:D2}", Tz / 60) + " : " + string.Format("{0:D2}", Tz % 60);
         }
 
         private DispatcherTimer disTimer = new DispatcherTimer();
-        public void CountDown()
+        public void TCountDown()
         {
             //设置定时器
             disTimer.Tick += new EventHandler(UpdateCountDownDisplay);//每一秒执行的方法
@@ -346,6 +345,7 @@ namespace ClasS
         {
             Pop_Countdown2.IsOpen = false;
             Pop_Countdown.IsOpen = true;
+            disTimer.Stop();
         }
 
         private void N0(object sender, MouseButtonEventArgs e)
@@ -437,6 +437,12 @@ namespace ClasS
         private void S_D(object sender, MouseButtonEventArgs e)
         {
             time_num.Content = Ts + "s";
+        }
+
+        private void Abnormal(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start("ClasS.exe");
+            Application.Current.Shutdown();
         }
     }
 }
