@@ -1,7 +1,8 @@
 # ClasS
 一个windows平台的灵动课程表<br/><br/>
 ![image](https://github.com/WWNNL/ClasS/assets/111435336/ccbf02c3-8b5f-4834-8f3b-2c0ada709215)<br/><br/>
-![image](https://github.com/WWNNL/ClasS/assets/111435336/ccbf02c3-8b5f-4834-8f3b-2c0ada709215)<br/><br/>
+![image](https://github.com/WWNNL/ClasS/assets/111435336/93c0cbb9-1a44-49dd-8882-7597f19f4adc)<br/><br/>
+![image](https://github.com/WWNNL/ClasS/assets/111435336/56ab6ae2-be7e-452c-a12e-110910e19cd7)<br/><br/>
 支持按照日期获取当天课表<br/><br/>
 支持动态显示时间<br/><br/>
 支持倒计时<br/><br/>
