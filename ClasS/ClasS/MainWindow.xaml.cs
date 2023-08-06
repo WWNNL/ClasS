@@ -141,6 +141,7 @@ namespace ClasS
         {
             string[] text = File.ReadAllLines("ClasS.yaml");
             int week = Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"))-1;
+            if (week == -1) week = 6;
 
             L_0.Content = text[week][0];
             L_1.Content = text[week][1];
@@ -289,7 +290,7 @@ namespace ClasS
             Pop_Countdown3.IsOpen = false;
             Pop_Countdown.IsOpen = false;
             Pop_Countdown2.IsOpen = true;
-            Tz = Ts + Tm * 60 + 1;
+            Tz = Ts + Tm * 60;
             disTimer.Tick -= new EventHandler(UpdateCountDownDisplay);
             TCountDown();
         }
@@ -297,12 +298,16 @@ namespace ClasS
         void UpdateCountDownDisplay(object sender, EventArgs e)
         {
             Tz--;
+            int s, m, h;
+            s = (Tz % 60);
+            m = (Tz / 60) % 60;
+            h = (Tz / 3600) % 60;
             if (Tz == -1)
                 disTimer.Stop();
             else if (Tz < 3)
                 System.Media.SystemSounds.Beep.Play();
            if (Tz > -1)
-                Pop_Ctime.Content = string.Format("{0:D2}", Tz / 3600) + " : " + string.Format("{0:D2}", Tz / 60) + " : " + string.Format("{0:D2}", Tz % 60);
+                Pop_Ctime.Content = string.Format("{0:D2}", h) + " : " + string.Format("{0:D2}", m) + " : " + string.Format("{0:D2}", s);
         }
 
         private DispatcherTimer disTimer = new DispatcherTimer();

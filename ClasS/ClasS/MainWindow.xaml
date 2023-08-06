@@ -7,13 +7,15 @@
         mc:Ignorable="d"
         Title="ClasS" Height="67" Width="592"
         WindowStyle="None"
-        Opacity="1" Background="#7FFFFFFF"
+        Opacity="1"
+        AllowsTransparency="True"
+        Background="#7FFFFFFF"
         ResizeMode="NoResize"
         PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
         PreviewMouseMove="Window_PreviewMouseMove"
         PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp"
         PreviewMouseRightButtonDown="Window_PreviewMouseRightButtonDown"
-        WindowStartupLocation="CenterOwner" AllowsTransparency="True" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterOwner" Loaded="Window_Loaded"
         >
     <Window.Resources>
         <Style x:Key="M" TargetType="Label">
@@ -70,7 +72,6 @@
             <RowDefinition/>
             <RowDefinition Height="0.01*"/>
         </Grid.RowDefinitions>
-
         <Popup x:Name="Pop_time" Width="366" Height="96"
                PlacementTarget = "{Binding ElementName=PopButton}"
                Placement="Center"
